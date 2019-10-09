@@ -1,7 +1,7 @@
 static bool DSW1, ESW1;   // bottom switch
 static bool DSW2, ESW2;   // light dependent resistor sensor module
 
-void limit_checker ( void )
+void limit_checker( void )
 {
   static bool PSW1, PSW2;
   DSW1 = !digitalRead( SW1 ); ESW1 = DSW1 ^ PSW1 & DSW1; PSW1 = DSW1;

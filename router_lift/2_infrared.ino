@@ -26,19 +26,22 @@ static uint32_t CurrentValue;     // raw data
 static char     CurrentCode;      // ascii numeral code
 static uint8_t Figure;            // 1 to 9 number code
 
-void infrared_checker ( void )
+void infrared_checker( void )
 {
   DirectSwitch = OneShotSwitch = false;
   if ( irrecv.decode( &results ) )
   {
     if ( results.decode_type == NEC )
     {
-      DirectSwitch = true;
-      if ( results.bits  ) OneShotSwitch = true;
-      if ( results.bits  ) CurrentValue = results.value;
-      else RepeatCounter++;
+      if ( ( results.value & _VALID ) == _VALID )
+      {
+        DirectSwitch = true;
+        if ( results.bits  ) OneShotSwitch = true;
+        if ( results.bits  ) CurrentValue = results.value;
+        else RepeatCounter++;
+      }
     } else RepeatCounter = 0;
     irrecv.resume();
   }
-  else CurrentValue = NULL;
+  else CurrentValue = '\0';
 }
